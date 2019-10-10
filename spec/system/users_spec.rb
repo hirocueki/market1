@@ -16,6 +16,18 @@ RSpec.describe "Users", type: :system do
     }.to change{User.count}.by(1)
 
   end
-  it 'ショッピングカートを通して商品を購入できる'
+
+
+  it 'ショッピングカートを通して商品を購入できる' do
+    sign_in user
+    visit product_path(product)
+    click_on 'カートに追加'
+    click_on '購入にすすむ'
+    fill_in '名前', with: user.name
+    fill_in '配送先住所', with: user.address
+    click_on '購入する'
+
+    expect(Order.count).to eq 1
+  end
 
 end
