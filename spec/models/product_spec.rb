@@ -8,7 +8,7 @@ RSpec.describe Product, type: :model do
                        price: 6000,
                        description: 'ありふれたデザインの机',
                        displayed: true,
-                       order_index: 1
+                       display_order: 1
     )
     expect(product).to be_valid
   end

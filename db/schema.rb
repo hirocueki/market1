@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(version: 2019_10_10_073037) do
     t.string "name", null: false
     t.string "image", default: "", null: false
     t.integer "price", null: false
-    t.text "description", null: false
+    t.text "description", default: "", null: false
     t.boolean "displayed", default: true, null: false
-    t.integer "order_index", null: false
+    t.integer "display_order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
