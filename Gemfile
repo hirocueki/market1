@@ -11,6 +11,8 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'devise'
 gem 'hamlit-rails'
+gem 'erb2haml'
+
 gem 'rails-i18n'
 gem 'bootstrap'
 gem 'jquery-rails'
