@@ -5,5 +5,11 @@ RSpec.describe "Carts", type: :system do
     driven_by(:rack_test)
   end
 
-  pending "add some scenarios (or delete) #{__FILE__}"
+  it '商品を追加できる' do
+
+  end
+
+  it '商品を削除できる'
+
+  it '中身を確認できる'
 end
