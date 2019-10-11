@@ -14,9 +14,17 @@ RSpec.describe "Users", type: :system do
       fill_in 'Password confirmation', with: 'ueki999'
       click_on 'Sign up'
     }.to change{User.count}.by(1)
-
   end
 
+
+  let!(:user) { FactoryBot.create(:user) }
+  let!(:product) { FactoryBot.create(:product) }
+
+  it 'ログイン後、カートの中身が確認できる' do
+    sign_in user
+    visit cart_path(user.cart)
+    expect(page).to have_content '商品はありません'
+  end
 
   it 'ショッピングカートを通して商品を購入できる' do
     sign_in user
