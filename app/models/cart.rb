@@ -3,14 +3,7 @@ class Cart < ApplicationRecord
   has_many :cart_items
 
   def amount
-    # products = cart_items.map( &:product )
-    # products.map( &:price ).inject(0, :+)
-    #
-    amount = 0
-    cart_items.each do |cart_item|
-      amount += cart_item.quantity * cart_item.product.price
-    end
-    amount
+    cart_items.map( &:amount ).inject(0, :+)
   end
 
   def items_count
