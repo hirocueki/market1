@@ -17,6 +17,8 @@ gem 'rails-i18n'
 gem 'bootstrap'
 gem 'jquery-rails'
 
+gem 'enumerize'
+
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
