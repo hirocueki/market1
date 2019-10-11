@@ -18,8 +18,6 @@ RSpec.describe Cart, type: :model do
 
   it 'おなじ商品を２個追加したときの価格がただしい' do
     cart = Cart.create(user: user)
-    expect(cart).to be_valid
-    expect(cart.items_count).to eq 0
 
     cart.cart_items.create(
                      quantity: 2,
