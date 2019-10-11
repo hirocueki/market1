@@ -26,6 +26,9 @@ module Market1
     config.i18n.default_locale = :ja
 
     config.generators do |g|
+      g.assets false             # CSS/JSファイル生成せず
+      g.skip_routes false        # trueなら routes.rb変更せず
+      g.helper false             # ヘルパー生成せず
       g.test_framework :rspec,
                        fixtures: false,
                        view_specs: false,
