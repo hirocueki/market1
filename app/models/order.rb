@@ -18,4 +18,8 @@ class Order < ApplicationRecord
   def amount
     order_items.map( &:amount ).inject(0, :+)
   end
+
+  def amount_with_tax
+    amount + (amount*tax/100).to_i
+  end
 end
