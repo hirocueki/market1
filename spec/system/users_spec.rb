@@ -48,6 +48,21 @@ RSpec.describe "Users", type: :system do
     }.to change { Order.count }.by(1)
   end
 
-  it '購入後はカートの中身が空になる'
+  it '購入後はカートの中身が空になる' do
+    sign_in user
+    visit product_path(product)
+    click_on 'カートに追加'
 
+    user.cart.reload
+    expect(user.cart.cart_items).to_not be_empty
+
+    click_on '購入にすすむ'
+    fill_in '名前', with: '武田鉄矢'
+    fill_in '配送先', with: '東京都杉並区'
+    select '2019/10/14', from: 'order_delivery_date'
+    expect {
+      click_on '購入する'
+    }.to change { Order.count }.by(1)
+    expect(user.cart.cart_items).to be_empty
   end
+end

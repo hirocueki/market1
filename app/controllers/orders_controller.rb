@@ -6,6 +6,7 @@ class OrdersController < ApplicationController
     order.build_items_from(@cart)
 
     if order.save
+      current_user.cart.clear()
       redirect_to root_url, notice: '購入ありがとうございました！'
     else
       redirect_to carts_url
