@@ -1,2 +1,15 @@
-products#show
+= @product.name
+= @product.price
+
+- if signed_in?
+  = button_to (product_cart_items_path(@product)) do
+    カートに追加
+  = render 'carts/item_list', cart: current_user.cart
+
+  = link_to '購入にすすむ', carts_path
+- else
+  商品を購入するには
+  = link_to 'ログイン', new_user_session_path
+  してください。
+
 

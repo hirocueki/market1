@@ -6,6 +6,8 @@ class Order < ApplicationRecord
             in: { tm8_12: 0, tm12_14: 1, tm14_16: 2, tm16_18: 3, tm18_20: 4, tm20_21: 5 },
             default: :tm8_12
 
+  validates :name, :address, :delivery_date, :delivery_time, presence: true
+
   def build_items_from(cart)
     cart.cart_items.map do |cart_item|
       order_items.build(

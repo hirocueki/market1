@@ -1,0 +1,6 @@
+%h3 カートの中身
+
+%ul
+  - cart.cart_items.each do |item|
+    %li= "#{item.product.name} (#{item.product.price})"
+  %li= "合計 #{cart.amount}"

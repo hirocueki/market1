@@ -1,2 +1,6 @@
 %h1 Carts#show
-商品はありません
+- if @cart.cart_items.empty?
+  商品はありません
+- else
+  - @cart.cart_items.each { |cart_item| cart_item.product.name }
+  = render 'carts/form', order: @order, cart: @cart
