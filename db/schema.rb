@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2019_10_11_050855) do
   end
 
   create_table "orders", force: :cascade do |t|
+    t.string "name", null: false
     t.string "address", null: false
     t.date "delivery_date", null: false
     t.integer "delivery_time", null: false
