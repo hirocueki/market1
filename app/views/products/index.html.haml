@@ -1,5 +1,6 @@
-%h1 商品一覧
+%h1 ミラクルマーケット
 
-%ul
+
+%ul.list-group.products
 - @products.each do |product|
-  %li= link_to "#{product.name} (#{product.price}円)", product_path(product)
+  %li.list-group-item= link_to "#{product.name} (#{product.price}円)", product_path(product)
