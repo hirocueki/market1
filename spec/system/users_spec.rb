@@ -26,16 +26,27 @@ RSpec.describe "Users", type: :system do
     expect(page).to have_content '商品はありません'
   end
 
-  it 'ショッピングカートを通して商品を購入できる' do
+  it 'カートに商品を追加できる' do
+    sign_in user
+    visit product_path(product)
+
+    expect {
+      click_on 'カートに追加'
+    }.to change { CartItem.count }.by(1)
+  end
+
+  it 'カートを通して商品を購入できる' do
     sign_in user
     visit product_path(product)
     click_on 'カートに追加'
     click_on '購入にすすむ'
     fill_in '名前', with: user.name
-    fill_in '配送先住所', with: user.address
-    click_on '購入する'
-
-    expect(Order.count).to eq 1
+    fill_in '配送先', with: user.address
+    expect {
+      click_on '購入する'
+    }.to change { Order.count }.by(1)
   end
+
+  it '購入後はカートの中身が空になる'
 
   end

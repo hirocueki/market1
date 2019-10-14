@@ -4,23 +4,68 @@ RSpec.describe Order, type: :model do
   let!(:today) { Date.today }
   let!(:cart) { FactoryBot.create(:cart) }
 
+  it 'invalid' do
+    expect(Order.new).to be_invalid
+    expect(Order.new(name:'やまもとじょうじ')).to be_invalid
+    expect(Order.new(name:'やまもとじょうじ', address: '東京')).to be_invalid
+  end
+
+  it 'valid' do
+    # delivery_timeのdefaultが決まるので以下のテストは通る
+    expect(Order.new(name:'やまもとじょうじ', address: '東京', delivery_date: Date.today)).to be_valid
+    expect(Order.new(name:'やまもとじょうじ', address: '東京', delivery_date: Date.today, delivery_time: :tm8_12)).to be_valid
+  end
+
   it '配達時間はenumerizeされている' do
     is_expected.to enumerize(:delivery_time)
   end
 
-  it '商品を注文する' do
+  it '商品が空のオーダーは失敗する' do
     cart.cart_items.create(product: Product.create(name: 'table', price: 1000))
 
     order = Order.new(
-                   address: cart.user.address,
-                   delivery_date: 3.days.ago(today),
-                   delivery_time: :tm8_12,
+        address: cart.user.address,
+        delivery_date: 3.days.ago(today),
+        delivery_time: :tm8_12,
+        order_items: []
+        )
+    expect(order.save).to be_falsey
+  end
+
+  it '商品を注文する' do
+    user = FactoryBot.create(:user, name: 'うえき', address: '山形県')
+    user.cart.cart_items.create(product: Product.create(name: 'table', price: 1000))
+
+    order = Order.new(
+                     name: user.name,
+                     address: user.address,
+                     delivery_date: 3.days.ago(today),
+                     delivery_time: :tm8_12,
       ) {|order|
-      order.build_items_from(cart)
+      order.build_items_from(user.cart)
       expect(order.save!).to be_truthy
     }
     expect(order).to be_valid
     expect(order.amount).to eq 1000
+  end
+
+  it '商品を注文する2' do
+    user = FactoryBot.create(:user, name: 'うえき', address: '徳島県')
+    user.cart.cart_items.create(product: Product.create(name: 'table', price: 1000))
+
+    order = Order.new(
+                     name: user.name,
+                     address: user.address,
+                     delivery_date: 3.days.ago(today),
+                     delivery_time: :tm8_12,
+        ) {|order|
+      order.build_items_from(user.cart)
+    }
+    expect(order.order_items).to_not be_empty
+    expect{
+      order.save!
+      # expect( order.save ).to be_truthy
+    }.to change{ Order.count }.by(1)
   end
 
   it '税込価格がただしい' do
