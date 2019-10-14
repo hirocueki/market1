@@ -69,15 +69,17 @@ RSpec.describe Order, type: :model do
   end
 
   it '税込価格がただしい' do
-    cart.cart_items.create(product: Product.create(name: 'table', price: 1000))
+    user = FactoryBot.create(:user, name: '田中一郎', address: '沖縄県')
+    user.cart.cart_items.create(product: Product.create(name: 'table', price: 1000))
 
     order = Order.new(
-      address: cart.user.address,
-      delivery_date: 3.days.ago(today),
-      delivery_time: :tm8_12,
-      tax: 10
+                     name: user.name,
+                     address: user.address,
+                     delivery_date: 3.days.ago(today),
+                     delivery_time: :tm8_12,
+                     tax: 10
       ) {|order|
-      order.build_items_from(cart)
+      order.build_items_from(user.cart)
       order.save!
     }
     expect(order.amount_with_tax).to eq 1100
@@ -92,10 +94,11 @@ RSpec.describe Order, type: :model do
   # 4,000円で6点の商品を購入したとき5,940円になること
   # 小計 ¥4,000 / 6商品 = ¥4,000 + ¥1,200(¥600x2) + ¥300 = ¥5,500 + 税8% = ¥5,940
   # 税の1円以下は、切り捨て
-    order = Order.new {|order|
-      order.address = '東京都千代田区２−３'
-      order.delivery_date = 3.days.ago(Date.today)
-      order.tax = 8
+    order = Order.new(
+        name: 'やまもとごろう',
+        address: '東京都千代田区２−３',
+        delivery_date:  3.days.ago(Date.today),
+        tax: 8) {|order|
       order.order_items << [
         OrderItem.new(product: Product.new(name: 'apple', price: 600)),
         OrderItem.new(product: Product.new(name: 'orange', price: 300)),
@@ -114,9 +117,11 @@ RSpec.describe Order, type: :model do
   end
 
   it '税額10%のときの代引き手数料と送料の計算' do
-    order = Order.new {|order|
-      order.address = '東京都千代田区２−３'
-      order.delivery_date = 3.days.ago(Date.today)
+    order = Order.new(
+                     name: 'やまもとごろう',
+                     address: '東京都千代田区２−３',
+                     delivery_date:  3.days.ago(Date.today)
+    ) {|order|
       order.order_items << [
         OrderItem.new(
           product: Product.new(name: 'tea', price: 1000),

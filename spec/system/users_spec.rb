@@ -22,7 +22,7 @@ RSpec.describe "Users", type: :system do
 
   it 'ログイン後、カートの中身が確認できる' do
     sign_in user
-    visit cart_path(user.cart)
+    visit carts_path
     expect(page).to have_content '商品はありません'
   end
 
@@ -40,8 +40,9 @@ RSpec.describe "Users", type: :system do
     visit product_path(product)
     click_on 'カートに追加'
     click_on '購入にすすむ'
-    fill_in '名前', with: user.name
-    fill_in '配送先', with: user.address
+    fill_in '名前', with: '武田鉄矢'
+    fill_in '配送先', with: '東京都杉並区'
+    select '2019/10/14', from: 'order_delivery_date'
     expect {
       click_on '購入する'
     }.to change { Order.count }.by(1)
