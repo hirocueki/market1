@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+Product.create(name: '刺身', price: 400)
+Product.create(name: 'ジュース', price: 400)
+Product.create(name: '鯖', price: 400)
+Product.create(name: 'レタス', price: 400)

@@ -1,3 +1,12 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'products#index'
+
+  devise_for :users
+
+  resources :products, only: %i[index show] do
+    resources :cart_items , only: %i[create destroy]
+  end
+
+  resource :carts, only: %i[show]
+  resources :orders, only: %i[create]
 end

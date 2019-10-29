@@ -1,0 +1,21 @@
+%h3 カートの中身
+
+%ul.list-group
+  - cart.cart_items.each do |item|
+    %li.list-group-item
+      .row
+        .col-5.name= item.product.name
+        .col.text-md-right.quantity= "× #{item.quantity}"
+        .col-4.text-md-right.price
+          = "¥ #{item.amount}"
+          =link_to '削除',
+           product_cart_item_path(item.product, item),
+           class: 'btn btn-danger',
+           method: :delete,
+           data: {confirm: '削除しますか?'}
+
+  %li.list-group-item
+    .row
+      .col-5.name 合計
+      .col.text-md-right.quantity
+      .col-4.text-md-right.price= "¥ #{cart.amount}"

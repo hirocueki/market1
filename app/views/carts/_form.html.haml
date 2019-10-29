@@ -1,0 +1,8 @@
+= simple_form_for(order, html: { class: 'form-inline' }) do |f|
+  .field
+    = f.input :name,  placeholder: "名前", class: 'form-control'
+    = f.input :address, placeholder: "配送先", class: 'form-control'
+    -#- AVAILABLE_DATES = (3.days.ago..14.days.ago).map{ |day| l(day) }
+    = f.input :delivery_date, placeholder: '配達日', collection: [l(Date.today)]
+  .actions
+    = f.submit '購入する', class: 'btn btn-primary mt-1'

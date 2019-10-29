@@ -1,0 +1,27 @@
+.container
+  .row
+    .col-8
+      .product_image
+        = image_tag '/assets/noimage.jpg'
+      = @product.name
+      %span.price= @product.price
+
+      - if signed_in?
+        = simple_form_for([@product, @cart_item]) do |f|
+          .row.mt-3
+            .col-3
+              =f.input :quantity, collection: (1..10), label: false
+            .col
+              =f.submit 'カートに追加', class: 'btn btn-primary mt-1'
+
+    .col-4
+      - if signed_in?
+        = render 'carts/item_list', cart: current_user.cart
+
+        .text-md-right= link_to '購入にすすむ', carts_path
+      - else
+        商品を購入するには
+        = link_to 'ログイン', new_user_session_path
+        してください。
+  =link_to 'もどる', products_path
+
